@@ -1,0 +1,41 @@
+- name: install apache and config hmtl page
+  gather_facts: 'No'
+  hosts: serverhostname
+  tasks:
+    - name: download sample website page
+      get_url:
+      url: https://www.free-css.com/assets/files/free-css-templates/download/page275/hangover.zip
+      dest: /home/user1/
+    - name: install unzip
+      yum:
+        name: unzip
+        state: latest
+    - name: unarchive zip
+      unarchive:
+        src: /home/user1/hangover.zip
+        dest: /home/user1/
+        remote_src: 'yes'
+    - name: install apache on ((ansible_all_ipv4_addresses))
+      yum:
+        name: httpd
+        state: latest
+    - name: open website port
+      firewalld:
+        service: http
+        permanent: true
+        state: enabled
+    - name: copy html file on the html dir
+      copy:
+        src: /home/user1/hangover-master
+        dest: /var/www/html/
+        remote_src: 'yes'
+        directory_mode: 'yes'
+    - name: start apache services
+      service:
+        name: httpd
+        enabled: 'yes'
+        state: started
+    - name: restart firewall
+      service:
+        name: firewalld
+        state: restarted
