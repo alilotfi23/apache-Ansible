@@ -1,41 +1,48 @@
-- name: install apache and config hmtl page
-  gather_facts: 'No'
-  hosts: serverhostname
+- name: install apache and config html page
+  gather_facts: 'No'  # Disable gathering facts to speed up the playbook execution
+  hosts: serverhostname  # Specify the target host or group of hosts
   tasks:
     - name: download sample website page
-      get_url:
-      url: https://www.free-css.com/assets/files/free-css-templates/download/page275/hangover.zip
-      dest: /home/user1/
+      get_url:  # Use the get_url module to download a file from a URL
+        url: https://www.free-css.com/assets/files/free-css-templates/download/page275/hangover.zip  # URL of the sample website template
+        dest: /home/user1/  # Destination directory on the target host
+
     - name: install unzip
-      yum:
-        name: unzip
-        state: latest
+      yum:  # Use the yum module to manage packages on a Red Hat-based system
+        name: unzip  # Package to install
+        state: latest  # Ensure the latest version of the package is installed
+
     - name: unarchive zip
-      unarchive:
-        src: /home/user1/hangover.zip
-        dest: /home/user1/
-        remote_src: 'yes'
+      unarchive:  # Use the unarchive module to extract files from an archive
+        src: /home/user1/hangover.zip  # Source zip file to be extracted
+        dest: /home/user1/  # Destination directory for extracted files
+        remote_src: 'yes'  # Indicate that the source file is already on the remote host
+
     - name: install apache on ((ansible_all_ipv4_addresses))
-      yum:
-        name: httpd
-        state: latest
+      yum:  # Use the yum module to install packages
+        name: httpd  # Package for the Apache HTTP server
+        state: latest  # Ensure the latest version of Apache is installed
+
     - name: open website port
-      firewalld:
-        service: http
-        permanent: true
-        state: enabled
+      firewalld:  # Use the firewalld module to manage firewall rules
+        service: http  # Specify the HTTP service to allow traffic
+        permanent: true  # Make the rule permanent (survives reboots)
+        state: enabled  # Enable the service in the firewall
+
     - name: copy html file on the html dir
-      copy:
-        src: /home/user1/hangover-master
-        dest: /var/www/html/
-        remote_src: 'yes'
-        directory_mode: 'yes'
+      copy:  # Use the copy module to copy files or directories
+        src: /home/user1/hangover-master  # Source directory containing the HTML files
+        dest: /var/www/html/  # Destination directory for the web server's document root
+        remote_src: 'yes'  # Indicate that the source directory is already on the remote host
+        directory_mode: 'yes'  # Preserve directory permissions
+
     - name: start apache services
-      service:
-        name: httpd
-        enabled: 'yes'
-        state: started
+      service:  # Use the service module to manage system services
+        name: httpd  # Name of the service to manage (Apache HTTP server)
+        enabled: 'yes'  # Ensure the service is enabled to start on boot
+        state: started  # Start the service if it is not already running
+
     - name: restart firewall
-      service:
-        name: firewalld
-        state: restarted
+      service:  # Use the service module to manage system services
+        name: firewalld  # Name of the firewall service to manage
+        state: restarted  # Restart the firewall service to apply changes
