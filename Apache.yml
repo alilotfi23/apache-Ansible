@@ -3,7 +3,7 @@
   hosts: serverhostname  # Specify the target host or group of hosts
   tasks:
     - name: download sample website page
-      get_url:  # Use the get_url module to download a file from a URL
+      get_url:  # Use the get_url module to download a Ui files from a URL
         url: https://www.free-css.com/assets/files/free-css-templates/download/page275/hangover.zip  # URL of the sample website template
         dest: /home/user1/  # Destination directory on the target host
 
