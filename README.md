@@ -1,7 +1,7 @@
 # Ansible Playbook: Install Apache and Deploy Sample Website
 
 ## Overview
-This Ansible playbook automates the installation of Apache web server and deploys a sample website on a specified server.
+This Ansible playbook automates the installation of the Apache web server and deploys a sample website on a specified server.
 
 ## Requirements
 - Ansible installed on the control node.
@@ -9,7 +9,7 @@ This Ansible playbook automates the installation of Apache web server and deploy
 - Internet connectivity on the target server for package downloads.
 
 ## Usage
-1. Update the `hosts` file with the hostname or IP address of your target server under `[serverhostname]`.
+1. Update the `hosts` file with your target server's hostname or IP address under `[serverhostname]`.
 
 2. Customize variables if needed:
    - Modify the `url` parameter in the `get_url` task to point to your desired sample website ZIP file.
